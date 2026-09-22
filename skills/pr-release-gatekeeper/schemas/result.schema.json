@@ -1,0 +1,422 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pr-release-gatekeeper:result-schema:0.1.0",
+  "title": "PR Release Gatekeeper Result",
+  "description": "Canonical machine-readable result contract for the Phase 7A Core Contract Layer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_type",
+    "review_scope",
+    "run_status",
+    "verdict",
+    "sources",
+    "coverage",
+    "material_claims",
+    "findings",
+    "human_review",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "review_type": {
+      "$ref": "#/$defs/review_type"
+    },
+    "review_scope": {
+      "$ref": "#/$defs/review_scope"
+    },
+    "run_status": {
+      "$ref": "#/$defs/run_status"
+    },
+    "verdict": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "PASS",
+        "PASS_WITH_FINDINGS",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_READY_FOR_PUBLICATION",
+        null
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "material_claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/material_claim"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "human_review": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/human_review_summary"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "review_type": {
+      "type": "string",
+      "enum": [
+        "FULL_GATE_REVIEW",
+        "FOCUSED_REVIEW"
+      ]
+    },
+    "run_status": {
+      "type": "string",
+      "enum": [
+        "COMPLETED",
+        "INCOMPLETE_INPUT",
+        "CAPABILITY_BLOCKED",
+        "EXECUTION_FAILED"
+      ]
+    },
+    "review_domain": {
+      "type": "string",
+      "enum": [
+        "FACTUAL_INTEGRITY",
+        "EVIDENCE_SUFFICIENCY",
+        "MESSAGING_ALIGNMENT",
+        "EDITORIAL_USABILITY",
+        "STYLE_COMPLIANCE",
+        "COMMUNICATIONS_RISK"
+      ]
+    },
+    "finding_type": {
+      "type": "string",
+      "enum": [
+        "CLAIM_CONTRADICTED_BY_EVIDENCE",
+        "INTERNAL_CONTRADICTION",
+        "QUOTE_INTEGRITY_MISMATCH",
+        "ATTRIBUTION_ERROR",
+        "MATERIAL_CLAIM_UNSUPPORTED",
+        "MATERIAL_CONTEXT_OMISSION",
+        "UNRESOLVED_EVIDENCE_CONFLICT",
+        "APPROVED_MESSAGING_MISALIGNMENT",
+        "KEY_MESSAGE_OMISSION",
+        "MATERIAL_AMBIGUITY",
+        "UNCLEAR_ATTRIBUTION",
+        "HEADLINE_BODY_MISMATCH",
+        "PRESS_RELEASE_USABILITY_ISSUE",
+        "STYLE_GUIDE_VIOLATION",
+        "OVERSTATEMENT_RISK",
+        "MATERIAL_COMMUNICATIONS_RISK"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "CRITICAL",
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "materiality": {
+      "type": "string",
+      "enum": [
+        "MATERIAL",
+        "NON_MATERIAL",
+        "UNCERTAIN"
+      ]
+    },
+    "evidence_status": {
+      "type": "string",
+      "enum": [
+        "SUPPORTED",
+        "CONTRADICTED",
+        "UNSUPPORTED",
+        "AMBIGUOUS",
+        "CONFLICTING_EVIDENCE"
+      ]
+    },
+    "human_review_reason": {
+      "type": "string",
+      "enum": [
+        "INSUFFICIENT_EVIDENCE",
+        "UNRESOLVED_SOURCE_CONFLICT",
+        "AUTHORITY_UNRESOLVED",
+        "AMBIGUOUS_MEANING",
+        "MATERIALITY_UNCERTAIN",
+        "CROSS_LANGUAGE_UNCERTAINTY",
+        "PROFESSIONAL_JUDGMENT_REQUIRED"
+      ]
+    },
+    "review_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "domains"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domains": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/review_domain"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "label",
+        "usable"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "usable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "material_claims_sufficient",
+        "summary"
+      ],
+      "properties": {
+        "material_claims_sufficient": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "evidence_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "location",
+        "evidence_basis"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_basis": {
+          "type": "string",
+          "enum": [
+            "DIRECT",
+            "DERIVED"
+          ]
+        },
+        "excerpt": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "material_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "claim_text",
+        "draft_location",
+        "evidence_status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "draft_location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_status": {
+          "$ref": "#/$defs/evidence_status"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/evidence_reference"
+          }
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "primary_domain",
+        "finding_type",
+        "secondary_concerns",
+        "severity",
+        "materiality",
+        "draft_location",
+        "claim_text",
+        "evidence_status",
+        "evidence_refs",
+        "material_claim_ids",
+        "explanation",
+        "recommended_action",
+        "human_review_required",
+        "human_review_reason",
+        "human_review_request",
+        "is_blocker"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_domain": {
+          "$ref": "#/$defs/review_domain"
+        },
+        "finding_type": {
+          "$ref": "#/$defs/finding_type"
+        },
+        "secondary_concerns": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/review_domain"
+          }
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "materiality": {
+          "$ref": "#/$defs/materiality"
+        },
+        "draft_location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_status": {
+          "$ref": "#/$defs/evidence_status"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence_reference"
+          }
+        },
+        "material_claim_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommended_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "human_review_required": {
+          "type": "boolean"
+        },
+        "human_review_reason": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/human_review_reason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "human_review_request": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "is_blocker": {
+          "type": "boolean"
+        }
+      }
+    },
+    "human_review_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "reason",
+        "request"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "$ref": "#/$defs/human_review_reason"
+        },
+        "request": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

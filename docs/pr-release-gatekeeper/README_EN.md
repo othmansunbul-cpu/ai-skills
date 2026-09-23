@@ -11,7 +11,7 @@ Choose a **Full Gate Review** for a complete publication-readiness check. It nee
 
 The skill produces a validated structured result and readable summary: an eligible decision, prioritized findings, evidence links, items needing human review, and limitations. Human Review requires an authorized person or additional evidence; it is not automatic approval. The skill does not automatically rewrite the release or guarantee publication safety.
 
-After publication of the planned GitHub repository, install with:
+Install from the public repository:
 
 ```sh
 npx skills add othmansunbul-cpu/ai-skills --skill pr-release-gatekeeper
@@ -23,4 +23,4 @@ The host must read supplied files and run `scripts/validate_result.py` from the 
 <python-3-command> <skill-root>/scripts/validate_result.py <result.json>
 ```
 
-Data handling depends on the host you choose. Share only material you are authorized to provide. See [known limitations](KNOWN_LIMITATIONS_AR_EN.md) and [suggested prompts](SUGGESTED_PROMPTS_AR_EN.md). The pre-GitHub distribution candidate has not been published. Remote installation and skills.sh discovery have not yet been verified.
+Data handling depends on the host you choose. Share only material you are authorized to provide. See [known limitations](KNOWN_LIMITATIONS_AR_EN.md) and [suggested prompts](SUGGESTED_PROMPTS_AR_EN.md). The skill is also listed on [skills.sh](https://skills.sh/othmansunbul-cpu/ai-skills/pr-release-gatekeeper).
